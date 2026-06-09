@@ -1,0 +1,96 @@
+name: Build & Release MoonLoader Music APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Release APK (unsigned / debug-signed)
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Locate and rename APK
+        run: |
+          mkdir -p release_output
+          APK=$(find app/build/outputs/apk -name "*.apk" | head -1)
+          if [ -n "$APK" ]; then
+            TAG="${{ github.ref_name }}"
+            if [ -z "$TAG" ]; then TAG="${{ github.event.inputs.version }}"; fi
+            cp "$APK" "release_output/MoonLoaderMusic-${TAG}.apk"
+            echo "APK_PATH=release_output/MoonLoaderMusic-${TAG}.apk" >> $GITHUB_ENV
+          else
+            echo "ERROR: No APK found" && exit 1
+          fi
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MoonLoaderMusic-APK
+          path: release_output/*.apk
+          retention-days: 30
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: MoonLoader Music ${{ github.ref_name }}
+          body: |
+            ## MoonLoader Music ${{ github.ref_name }}
+
+            Free, open-source YouTube Music client for Android — no ads, no Google account required.
+
+            ### Features
+            - Stream YouTube Music without ads
+            - Download songs (M4A) for offline listening
+            - Subscribe to artists/channels (no login needed)
+            - Background playback with notification controls
+            - Modern dark moon-themed Material You UI
+
+            ### Install
+            1. Download the APK below
+            2. Enable **Install from Unknown Sources** in Settings → Security
+            3. Install and enjoy!
+
+            Requires Android 5.0+
+          files: release_output/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
