@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoonLoader Music</string>
+    <string name="search_hint">Search songs, artists…</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="library">Library</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="downloads">Downloads</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="download">Download</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="add_to_playlist">Add to Playlist</string>
+    <string name="create_playlist">Create Playlist</string>
+    <string name="share">Share</string>
+    <string name="settings">Settings</string>
+    <string name="trending">Trending</string>
+    <string name="recommended">Recommended</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="no_results">No results found</string>
+    <string name="loading">Loading…</string>
+    <string name="error_loading">Failed to load. Tap to retry.</string>
+    <string name="download_complete">Download complete</string>
+    <string name="download_failed">Download failed</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="queue">Queue</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="repeat">Repeat</string>
+    <string name="eq">Equalizer</string>
+    <string name="sleep_timer">Sleep Timer</string>
+    <string name="audio_quality">Audio Quality</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="open_source">Open Source</string>
+    <string name="license">License GPL-3.0</string>
+    <string name="no_downloads">No downloads yet.\nDownload songs to listen offline.</string>
+    <string name="no_subscriptions">No subscriptions yet.\nSubscribe to artists to follow them.</string>
+    <string name="explore_music">Trending music will appear here.</string>
+    <string name="search_placeholder">Search YouTube Music…</string>
+</resources>

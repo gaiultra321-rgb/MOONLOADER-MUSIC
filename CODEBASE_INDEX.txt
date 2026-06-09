@@ -1,0 +1,2813 @@
+================================================================================
+  MOONLOADER MUSIC — COMPLETE CODEBASE INDEX
+  Generated: 2026-06-09
+  Project: YouTube Music Client for Android (Kotlin)
+  Package: com.moonloader.music
+  Min SDK: 21 (Android 5.0+)  |  Target SDK: 34
+================================================================================
+  HOW TO USE THIS FILE
+  --------------------
+  Each entry below has three lines:
+    FILE NAME  : just the filename
+    FILE PATH  : path relative to project root
+    CODE       : full contents (or note for non-code files)
+  Entries are separated by a line of dashes (----------------).
+================================================================================
+
+FILE NAME  : gradle-wrapper.jar
+FILE PATH  : gradle/wrapper/gradle-wrapper.jar
+CODE       : (binary file — Gradle wrapper JAR, do not edit)
+--------------------------------------------------------------------------------
+
+FILE NAME  : README.md
+FILE PATH  : README.md
+CODE       :
+# 🌙 MoonLoader Music
+
+<p align="center">
+  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="120" alt="MoonLoader Music Logo"/>
+</p>
+
+<p align="center">
+  <b>A free, open-source YouTube Music client for Android</b><br/>
+  Stream, Download, and Subscribe — No Ads, No Tracking
+</p>
+
+<p align="center">
+  <a href="https://github.com/gaiultra321-rgb/youtube-music-cliant-andorid-apk/releases"><img src="https://img.shields.io/github/v/release/gaiultra321-rgb/youtube-music-cliant-andorid-apk?label=Download%20APK&style=for-the-badge&color=6C63FF" alt="Download"/></a>
+  <img src="https://img.shields.io/badge/Android-5.0%2B-brightgreen?style=for-the-badge" alt="Android 5.0+"/>
+  <img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="License"/>
+</p>
+
+---
+
+## Features
+
+- **Stream** any YouTube Music track without an account
+- **Download** songs in MP3/M4A format for offline listening
+- **Subscribe** to artists and channels — local subscriptions, no login needed
+- **Background Playback** — music continues while you use other apps
+- **Modern Dark UI** — beautiful Material You design with moon-themed colors
+- **No Ads** — completely ad-free experience
+- **No Google account required**
+- **Playlist support** — create and manage local playlists
+- **Search** YouTube Music catalog
+- **Mini Player** — floating controls in notification bar
+
+## Screenshots
+
+> Coming soon
+
+## Download
+
+Get the latest APK from [Releases](https://github.com/gaiultra321-rgb/youtube-music-cliant-andorid-apk/releases)
+
+## Build from Source
+
+```bash
+git clone https://github.com/gaiultra321-rgb/youtube-music-cliant-andorid-apk.git
+cd youtube-music-cliant-andorid-apk
+./gradlew assembleRelease
+```
+
+## Tech Stack
+
+- **Language**: Kotlin
+- **UI**: Material Design 3 + ViewBinding
+- **YouTube Extractor**: NewPipe Extractor
+- **Media Playback**: ExoPlayer / Media3
+- **Download**: WorkManager
+- **Database**: Room
+- **Networking**: OkHttp + Retrofit
+- **Image Loading**: Glide
+
+## License
+
+GPL-3.0 License — see [LICENSE](LICENSE)
+
+---
+
+<p align="center">Made with ❤️ | MoonLoader Music</p>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : build.gradle
+FILE PATH  : app/build.gradle
+CODE       :
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.moonloader.music'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.moonloader.music"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    // AndroidX Core
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
+
+    // Navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.6'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.6'
+
+    // Media3 / ExoPlayer
+    implementation 'androidx.media3:media3-exoplayer:1.2.1'
+    implementation 'androidx.media3:media3-ui:1.2.1'
+    implementation 'androidx.media3:media3-session:1.2.1'
+    implementation 'androidx.media3:media3-datasource-okhttp:1.2.1'
+
+    // NewPipe Extractor (YouTube stream extraction)
+    implementation 'com.github.TeamNewPipe:NewPipeExtractor:v0.24.0'
+
+    // Room Database
+    implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'androidx.room:room-ktx:2.6.1'
+    kapt 'androidx.room:room-compiler:2.6.1'
+
+    // WorkManager (downloads)
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+
+    // Networking
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // Image Loading
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    kapt 'com.github.bumptech.glide:compiler:4.16.0'
+
+    // ViewModel + LiveData
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+
+    // Palette (color extraction from album art)
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+
+    // Lottie animations
+    implementation 'com.airbnb.android:lottie:6.3.0'
+
+    // Preferences
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+
+    // DataStore
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : AndroidManifest.xml
+FILE PATH  : app/src/main/AndroidManifest.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Network -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Storage (Downloads) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- Foreground Service (background playback) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name=".MoonLoaderApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MoonLoaderMusic"
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true">
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Player Activity -->
+        <activity
+            android:name=".ui.player.PlayerActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.main.MainActivity" />
+
+        <!-- Music Playback Service -->
+        <service
+            android:name=".service.MusicPlaybackService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
+        </service>
+
+        <!-- Download Service -->
+        <service
+            android:name=".service.DownloadService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <!-- File Provider for downloads -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.moonloader.music.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+</manifest>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : MoonLoaderApp.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/MoonLoaderApp.kt
+CODE       :
+package com.moonloader.music
+
+import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import com.moonloader.music.data.db.MusicDatabase
+import org.schabi.newpipe.extractor.NewPipe
+import org.schabi.newpipe.extractor.downloader.Downloader
+import org.schabi.newpipe.extractor.downloader.Request
+import org.schabi.newpipe.extractor.downloader.Response
+import okhttp3.OkHttpClient
+import okhttp3.JavaNetCookieJar
+import java.net.CookieManager
+
+class MoonLoaderApp : Application() {
+
+    companion object {
+        const val PLAYBACK_CHANNEL_ID = "moonloader_playback"
+        const val DOWNLOAD_CHANNEL_ID = "moonloader_download"
+        lateinit var instance: MoonLoaderApp
+            private set
+    }
+
+    val database by lazy { MusicDatabase.getInstance(this) }
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+        initNewPipe()
+        createNotificationChannels()
+    }
+
+    private fun initNewPipe() {
+        val cookieManager = CookieManager()
+        val okHttpClient = OkHttpClient.Builder()
+            .cookieJar(JavaNetCookieJar(cookieManager))
+            .build()
+        NewPipe.init(object : Downloader() {
+            override fun execute(request: Request): Response {
+                val requestBuilder = okhttp3.Request.Builder().url(request.url())
+                request.headers().forEach { (key, values) ->
+                    values.forEach { value -> requestBuilder.addHeader(key, value) }
+                }
+                val okHttpRequest = if (request.httpMethod() == "POST") {
+                    requestBuilder.post(okhttp3.RequestBody.create(null, request.dataToSend() ?: ByteArray(0))).build()
+                } else { requestBuilder.get().build() }
+                val resp = okHttpClient.newCall(okHttpRequest).execute()
+                return Response(resp.code, resp.message, resp.headers.toMultimap(), resp.body?.string(), resp.request.url.toString())
+            }
+        })
+    }
+
+    private fun createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val nm = getSystemService(NotificationManager::class.java)
+            nm.createNotificationChannels(listOf(
+                NotificationChannel(PLAYBACK_CHANNEL_ID, "Music Playback", NotificationManager.IMPORTANCE_LOW).apply {
+                    description = "Playback controls"; setShowBadge(false) },
+                NotificationChannel(DOWNLOAD_CHANNEL_ID, "Downloads", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    description = "Download progress" }
+            ))
+        }
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : MusicDatabase.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/data/db/MusicDatabase.kt
+CODE       :
+package com.moonloader.music.data.db
+
+import android.content.Context
+import androidx.room.*
+import com.moonloader.music.data.model.*
+
+@Dao
+interface SongDao {
+    @Query("SELECT * FROM songs ORDER BY addedAt DESC")
+    fun getAllSongs(): kotlinx.coroutines.flow.Flow<List<Song>>
+
+    @Query("SELECT * FROM songs WHERE isDownloaded = 1 ORDER BY addedAt DESC")
+    fun getDownloadedSongs(): kotlinx.coroutines.flow.Flow<List<Song>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSong(song: Song)
+
+    @Delete
+    suspend fun deleteSong(song: Song)
+
+    @Query("SELECT * FROM songs WHERE id = :id")
+    suspend fun getSongById(id: String): Song?
+
+    @Query("UPDATE songs SET isDownloaded = :downloaded, localPath = :path WHERE id = :id")
+    suspend fun updateDownloadStatus(id: String, downloaded: Boolean, path: String?)
+}
+
+@Dao
+interface SubscriptionDao {
+    @Query("SELECT * FROM subscriptions ORDER BY subscribedAt DESC")
+    fun getAllSubscriptions(): kotlinx.coroutines.flow.Flow<List<Subscription>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun subscribe(subscription: Subscription)
+
+    @Delete
+    suspend fun unsubscribe(subscription: Subscription)
+
+    @Query("SELECT * FROM subscriptions WHERE channelId = :channelId")
+    suspend fun getSubscription(channelId: String): Subscription?
+}
+
+@Dao
+interface PlaylistDao {
+    @Query("SELECT * FROM playlists ORDER BY createdAt DESC")
+    fun getAllPlaylists(): kotlinx.coroutines.flow.Flow<List<Playlist>>
+
+    @Insert
+    suspend fun createPlaylist(playlist: Playlist): Long
+
+    @Delete
+    suspend fun deletePlaylist(playlist: Playlist)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addSongToPlaylist(playlistSong: PlaylistSong)
+
+    @Query("DELETE FROM playlist_songs WHERE playlistId = :playlistId AND songId = :songId")
+    suspend fun removeSongFromPlaylist(playlistId: Long, songId: String)
+}
+
+@Database(
+    entities = [Song::class, Subscription::class, Playlist::class, PlaylistSong::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class MusicDatabase : RoomDatabase() {
+    abstract fun songDao(): SongDao
+    abstract fun subscriptionDao(): SubscriptionDao
+    abstract fun playlistDao(): PlaylistDao
+
+    companion object {
+        @Volatile private var INSTANCE: MusicDatabase? = null
+
+        fun getInstance(context: Context): MusicDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    MusicDatabase::class.java,
+                    "moonloader_music.db"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : YouTubeExtractor.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/data/extractor/YouTubeExtractor.kt
+CODE       :
+package com.moonloader.music.data.extractor
+
+import com.moonloader.music.data.model.Song
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.schabi.newpipe.extractor.NewPipe
+import org.schabi.newpipe.extractor.ServiceList
+import org.schabi.newpipe.extractor.stream.StreamInfo
+import org.schabi.newpipe.extractor.stream.StreamInfoItem
+
+object YouTubeExtractor {
+
+    private val youtubeService = NewPipe.getService(ServiceList.YouTube.serviceId)
+
+    suspend fun search(query: String): List<Song> = withContext(Dispatchers.IO) {
+        try {
+            val extractor = youtubeService.getSearchExtractor(query, listOf("music_songs"), "")
+            extractor.fetchPage()
+            extractor.initialPage.items.mapNotNull { item ->
+                if (item is StreamInfoItem) Song(
+                    id = item.url, title = item.name, artist = item.uploaderName ?: "",
+                    thumbnailUrl = item.thumbnailUrl ?: "", duration = item.duration,
+                    videoId = extractVideoId(item.url), streamUrl = null
+                ) else null
+            }
+        } catch (e: Exception) { e.printStackTrace(); emptyList() }
+    }
+
+    suspend fun getStreamUrl(videoUrl: String): String? = withContext(Dispatchers.IO) {
+        try {
+            val streamInfo = StreamInfo.getInfo(youtubeService, videoUrl)
+            streamInfo.audioStreams.maxByOrNull { it.averageBitrate }?.content
+                ?: streamInfo.videoStreams.firstOrNull()?.content
+        } catch (e: Exception) { e.printStackTrace(); null }
+    }
+
+    suspend fun getTrending(): List<Song> = withContext(Dispatchers.IO) {
+        try {
+            val extractor = youtubeService.kioskList.getExtractorById("Trending", null)
+            extractor.fetchPage()
+            extractor.initialPage.items.take(30).mapNotNull { item ->
+                if (item is StreamInfoItem) Song(
+                    id = item.url, title = item.name, artist = item.uploaderName ?: "",
+                    thumbnailUrl = item.thumbnailUrl ?: "", duration = item.duration,
+                    videoId = extractVideoId(item.url), streamUrl = null
+                ) else null
+            }
+        } catch (e: Exception) { e.printStackTrace(); emptyList() }
+    }
+
+    private fun extractVideoId(url: String): String {
+        val regex = Regex("""(?:v=|youtu\.be/|/embed/|/shorts/)([\ w-]{11})""")
+        return regex.find(url)?.groupValues?.get(1) ?: url
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : Song.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/data/model/Song.kt
+CODE       :
+package com.moonloader.music.data.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "songs")
+data class Song(
+    @PrimaryKey val id: String,
+    val title: String,
+    val artist: String,
+    val thumbnailUrl: String,
+    val duration: Long,
+    val videoId: String,
+    val streamUrl: String?,
+    val localPath: String? = null,
+    val isDownloaded: Boolean = false,
+    val addedAt: Long = System.currentTimeMillis()
+)
+
+@Entity(tableName = "subscriptions")
+data class Subscription(
+    @PrimaryKey val channelId: String,
+    val channelName: String,
+    val channelUrl: String,
+    val avatarUrl: String,
+    val subscribedAt: Long = System.currentTimeMillis()
+)
+
+@Entity(tableName = "playlists")
+data class Playlist(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val name: String,
+    val createdAt: Long = System.currentTimeMillis()
+)
+
+@Entity(tableName = "playlist_songs", primaryKeys = ["playlistId", "songId"])
+data class PlaylistSong(
+    val playlistId: Long,
+    val songId: String,
+    val position: Int
+)
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : DownloadWorker.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/download/DownloadWorker.kt
+CODE       :
+package com.moonloader.music.download
+
+import android.content.Context
+import androidx.core.app.NotificationCompat
+import androidx.work.*
+import com.moonloader.music.MoonLoaderApp
+import com.moonloader.music.data.extractor.YouTubeExtractor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
+
+class DownloadWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
+
+    override suspend fun doWork(): Result {
+        val songId = inputData.getString(KEY_SONG_ID) ?: return Result.failure()
+        val songTitle = inputData.getString(KEY_SONG_TITLE) ?: "Unknown"
+        val videoUrl = inputData.getString(KEY_VIDEO_URL) ?: return Result.failure()
+        setForeground(createForegroundInfo(songTitle, 0))
+        return try {
+            val streamUrl = YouTubeExtractor.getStreamUrl(videoUrl) ?: return Result.failure()
+            val outputDir = File(applicationContext.getExternalFilesDir(null), "MoonLoader")
+            if (!outputDir.exists()) outputDir.mkdirs()
+            val outputFile = File(outputDir, "${songId.take(11)}.m4a")
+            withContext(Dispatchers.IO) {
+                val conn = URL(streamUrl).openConnection()
+                conn.connect()
+                val totalBytes = conn.contentLength.toLong()
+                var downloaded = 0L
+                conn.getInputStream().use { input ->
+                    FileOutputStream(outputFile).use { output ->
+                        val buf = ByteArray(8192)
+                        var bytes = input.read(buf)
+                        while (bytes != -1) {
+                            output.write(buf, 0, bytes)
+                            downloaded += bytes
+                            if (totalBytes > 0) {
+                                val pct = (downloaded * 100 / totalBytes).toInt()
+                                setProgress(workDataOf(KEY_PROGRESS to pct))
+                                setForeground(createForegroundInfo(songTitle, pct))
+                            }
+                            bytes = input.read(buf)
+                        }
+                    }
+                }
+            }
+            MoonLoaderApp.instance.database.songDao().updateDownloadStatus(songId, true, outputFile.absolutePath)
+            Result.success(workDataOf(KEY_OUTPUT_PATH to outputFile.absolutePath))
+        } catch (e: Exception) { e.printStackTrace(); Result.failure() }
+    }
+
+    private fun createForegroundInfo(title: String, progress: Int): ForegroundInfo {
+        val notification = NotificationCompat.Builder(applicationContext, MoonLoaderApp.DOWNLOAD_CHANNEL_ID)
+            .setContentTitle("Downloading")
+            .setContentText(title)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setProgress(100, progress, progress == 0)
+            .setOngoing(true).build()
+        return ForegroundInfo(1001, notification)
+    }
+
+    companion object {
+        const val KEY_SONG_ID = "song_id"
+        const val KEY_SONG_TITLE = "song_title"
+        const val KEY_VIDEO_URL = "video_url"
+        const val KEY_PROGRESS = "progress"
+        const val KEY_OUTPUT_PATH = "output_path"
+
+        fun buildRequest(songId: String, songTitle: String, videoUrl: String) =
+            OneTimeWorkRequestBuilder<DownloadWorker>()
+                .setInputData(workDataOf(KEY_SONG_ID to songId, KEY_SONG_TITLE to songTitle, KEY_VIDEO_URL to videoUrl))
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                .build()
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : DownloadService.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/service/DownloadService.kt
+CODE       :
+package com.moonloader.music.service
+
+import android.app.*
+import android.content.Intent
+import android.os.IBinder
+import androidx.core.app.NotificationCompat
+import com.moonloader.music.MoonLoaderApp
+
+/**
+ * DownloadService — foreground service wrapper for WorkManager-based downloads.
+ * WorkManager's DownloadWorker is the actual download engine; this service
+ * satisfies the <service> declaration in AndroidManifest that WorkManager
+ * requires for foreground expedited jobs on older Android versions.
+ */
+class DownloadService : Service() {
+
+    override fun onCreate() {
+        super.onCreate()
+        startForeground(
+            NOTIFICATION_ID,
+            buildNotification("Preparing download…")
+        )
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            ACTION_STOP -> {
+                stopForeground(STOP_FOREGROUND_REMOVE)
+                stopSelf()
+            }
+        }
+        return START_NOT_STICKY
+    }
+
+    override fun onBind(intent: Intent?): IBinder? = null
+
+    private fun buildNotification(message: String): Notification {
+        return NotificationCompat.Builder(this, MoonLoaderApp.DOWNLOAD_CHANNEL_ID)
+            .setContentTitle("MoonLoader Downloads")
+            .setContentText(message)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setOngoing(true)
+            .setSilent(true)
+            .build()
+    }
+
+    companion object {
+        const val NOTIFICATION_ID = 2001
+        const val ACTION_STOP = "com.moonloader.music.STOP_DOWNLOAD_SERVICE"
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : MusicPlaybackService.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/service/MusicPlaybackService.kt
+CODE       :
+package com.moonloader.music.service
+
+import android.app.PendingIntent
+import android.content.Intent
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.session.MediaSession
+import androidx.media3.session.MediaSessionService
+import com.moonloader.music.ui.main.MainActivity
+
+class MusicPlaybackService : MediaSessionService() {
+
+    private var mediaSession: MediaSession? = null
+    private lateinit var player: ExoPlayer
+
+    override fun onCreate() {
+        super.onCreate()
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+            .build()
+
+        player = ExoPlayer.Builder(this)
+            .setAudioAttributes(audioAttributes, true)
+            .setHandleAudioBecomingNoisy(true)
+            .build()
+
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        mediaSession = MediaSession.Builder(this, player)
+            .setSessionActivity(pendingIntent)
+            .build()
+    }
+
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
+        return mediaSession
+    }
+
+    override fun onDestroy() {
+        mediaSession?.run {
+            player.release()
+            release()
+            mediaSession = null
+        }
+        super.onDestroy()
+    }
+
+    fun playStream(streamUrl: String, title: String, artist: String, thumbnailUrl: String) {
+        val mediaItem = MediaItem.Builder()
+            .setUri(streamUrl)
+            .setMediaMetadata(
+                androidx.media3.common.MediaMetadata.Builder()
+                    .setTitle(title)
+                    .setArtist(artist)
+                    .setArtworkUri(android.net.Uri.parse(thumbnailUrl))
+                    .build()
+            )
+            .build()
+        player.setMediaItem(mediaItem)
+        player.prepare()
+        player.play()
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : SongAdapter.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/adapters/SongAdapter.kt
+CODE       :
+package com.moonloader.music.ui.adapters
+
+import android.view.*
+import android.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.moonloader.music.R
+import com.moonloader.music.data.model.Song
+
+class SongAdapter(
+    private val onPlay: (Song) -> Unit,
+    private val onDownload: ((Song) -> Unit)? = null,
+    private val onMore: ((Song) -> Unit)? = null
+) : ListAdapter<Song, SongAdapter.SongViewHolder>(DiffCallback) {
+
+    object DiffCallback : DiffUtil.ItemCallback<Song>() {
+        override fun areItemsTheSame(a: Song, b: Song) = a.id == b.id
+        override fun areContentsTheSame(a: Song, b: Song) = a == b
+    }
+
+    inner class SongViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+        private val thumbnail: ImageView = view.findViewById(R.id.img_song_thumbnail)
+        private val title: TextView = view.findViewById(R.id.tv_song_title)
+        private val artist: TextView = view.findViewById(R.id.tv_song_artist)
+        private val duration: TextView = view.findViewById(R.id.tv_song_duration)
+        private val btnDownload: ImageButton = view.findViewById(R.id.btn_song_download)
+        private val btnMore: ImageButton = view.findViewById(R.id.btn_song_more)
+
+        fun bind(song: Song) {
+            title.text = song.title
+            artist.text = song.artist
+            duration.text = formatDuration(song.duration)
+            Glide.with(view).load(song.thumbnailUrl)
+                .placeholder(R.drawable.ic_music_note)
+                .centerCrop().into(thumbnail)
+            view.setOnClickListener { onPlay(song) }
+            btnDownload.visibility = if (song.isDownloaded) View.GONE else View.VISIBLE
+            btnDownload.setOnClickListener { onDownload?.invoke(song) }
+            btnMore.setOnClickListener { onMore?.invoke(song) }
+        }
+
+        private fun formatDuration(s: Long) = "%d:%02d".format(s / 60, s % 60)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder =
+        SongViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false))
+
+    override fun onBindViewHolder(holder: SongViewHolder, position: Int) =
+        holder.bind(getItem(position))
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : SubscriptionAdapter.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/adapters/SubscriptionAdapter.kt
+CODE       :
+package com.moonloader.music.ui.adapters
+
+import android.view.*
+import android.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.moonloader.music.R
+import com.moonloader.music.data.model.Subscription
+
+class SubscriptionAdapter(
+    private val onOpen: (Subscription) -> Unit,
+    private val onUnsubscribe: (Subscription) -> Unit
+) : ListAdapter<Subscription, SubscriptionAdapter.SubViewHolder>(DiffCallback) {
+
+    object DiffCallback : DiffUtil.ItemCallback<Subscription>() {
+        override fun areItemsTheSame(a: Subscription, b: Subscription) = a.channelId == b.channelId
+        override fun areContentsTheSame(a: Subscription, b: Subscription) = a == b
+    }
+
+    inner class SubViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+        private val avatar: ImageView = view.findViewById(R.id.img_channel_avatar)
+        private val name: TextView = view.findViewById(R.id.tv_channel_name)
+        private val btnUnsub: ImageButton = view.findViewById(R.id.btn_unsubscribe)
+
+        fun bind(sub: Subscription) {
+            name.text = sub.channelName
+            Glide.with(view).load(sub.avatarUrl)
+                .placeholder(R.drawable.ic_subscriptions)
+                .circleCrop().into(avatar)
+            view.setOnClickListener { onOpen(sub) }
+            btnUnsub.setOnClickListener { onUnsubscribe(sub) }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubViewHolder =
+        SubViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_subscription, parent, false))
+
+    override fun onBindViewHolder(holder: SubViewHolder, position: Int) =
+        holder.bind(getItem(position))
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : DownloadsFragment.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/downloads/DownloadsFragment.kt
+CODE       :
+package com.moonloader.music.ui.downloads
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.moonloader.music.MoonLoaderApp
+import com.moonloader.music.databinding.FragmentDownloadsBinding
+import com.moonloader.music.ui.adapters.SongAdapter
+import com.moonloader.music.ui.player.PlayerActivity
+import com.moonloader.music.data.model.Song
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+class DownloadsFragment : Fragment() {
+
+    private var _binding: FragmentDownloadsBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var adapter: SongAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentDownloadsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        observeDownloads()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = SongAdapter(onPlay = { song -> playSong(song) })
+        binding.recyclerDownloads.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerDownloads.adapter = adapter
+    }
+
+    private fun observeDownloads() {
+        lifecycleScope.launch {
+            MoonLoaderApp.instance.database.songDao().getDownloadedSongs().collectLatest { songs ->
+                adapter.submitList(songs)
+                binding.tvEmptyDownloads.visibility = if (songs.isEmpty()) View.VISIBLE else View.GONE
+                binding.recyclerDownloads.visibility = if (songs.isEmpty()) View.GONE else View.VISIBLE
+            }
+        }
+    }
+
+    private fun playSong(song: Song) {
+        val path = song.localPath ?: return
+        val intent = Intent(requireContext(), PlayerActivity::class.java).apply {
+            putExtra(PlayerActivity.EXTRA_STREAM_URL, path)
+            putExtra(PlayerActivity.EXTRA_TITLE, song.title)
+            putExtra(PlayerActivity.EXTRA_ARTIST, song.artist)
+            putExtra(PlayerActivity.EXTRA_THUMBNAIL, song.thumbnailUrl)
+        }
+        startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : HomeFragment.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/home/HomeFragment.kt
+CODE       :
+package com.moonloader.music.ui.home
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.WorkManager
+import com.moonloader.music.data.extractor.YouTubeExtractor
+import com.moonloader.music.data.model.Song
+import com.moonloader.music.databinding.FragmentHomeBinding
+import com.moonloader.music.download.DownloadWorker
+import com.moonloader.music.ui.adapters.SongAdapter
+import com.moonloader.music.ui.player.PlayerActivity
+import kotlinx.coroutines.launch
+
+class HomeFragment : Fragment() {
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var adapter: SongAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        loadTrending()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = SongAdapter(
+            onPlay = { song -> playSong(song) },
+            onDownload = { song -> downloadSong(song) }
+        )
+        binding.recyclerHome.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerHome.adapter = adapter
+    }
+
+    private fun loadTrending() {
+        binding.progressHome.visibility = View.VISIBLE
+        binding.tvEmptyHome.visibility = View.GONE
+        lifecycleScope.launch {
+            try {
+                val songs = YouTubeExtractor.getTrending()
+                binding.progressHome.visibility = View.GONE
+                if (songs.isEmpty()) {
+                    binding.tvEmptyHome.visibility = View.VISIBLE
+                } else {
+                    adapter.submitList(songs)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                binding.progressHome.visibility = View.GONE
+                binding.tvEmptyHome.visibility = View.VISIBLE
+                binding.tvEmptyHome.text = getString(com.moonloader.music.R.string.error_loading)
+            }
+        }
+    }
+
+    private fun playSong(song: Song) {
+        lifecycleScope.launch {
+            try {
+                val streamUrl = YouTubeExtractor.getStreamUrl(song.id) ?: return@launch
+                val intent = Intent(requireContext(), PlayerActivity::class.java).apply {
+                    putExtra(PlayerActivity.EXTRA_STREAM_URL, streamUrl)
+                    putExtra(PlayerActivity.EXTRA_TITLE, song.title)
+                    putExtra(PlayerActivity.EXTRA_ARTIST, song.artist)
+                    putExtra(PlayerActivity.EXTRA_THUMBNAIL, song.thumbnailUrl)
+                }
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun downloadSong(song: Song) {
+        val request = DownloadWorker.buildRequest(song.videoId, song.title, song.id)
+        WorkManager.getInstance(requireContext()).enqueue(request)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : LibraryFragment.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/library/LibraryFragment.kt
+CODE       :
+package com.moonloader.music.ui.library
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.moonloader.music.MoonLoaderApp
+import com.moonloader.music.databinding.FragmentLibraryBinding
+import com.moonloader.music.ui.adapters.SongAdapter
+import com.moonloader.music.ui.player.PlayerActivity
+import com.moonloader.music.data.extractor.YouTubeExtractor
+import com.moonloader.music.data.model.Song
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+class LibraryFragment : Fragment() {
+
+    private var _binding: FragmentLibraryBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var adapter: SongAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLibraryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        observeLibrary()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = SongAdapter(onPlay = { song -> playSong(song) })
+        binding.recyclerLibrary.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerLibrary.adapter = adapter
+    }
+
+    private fun observeLibrary() {
+        lifecycleScope.launch {
+            MoonLoaderApp.instance.database.songDao().getAllSongs().collectLatest { songs ->
+                adapter.submitList(songs)
+                binding.tvEmptyLibrary.visibility = if (songs.isEmpty()) View.VISIBLE else View.GONE
+                binding.recyclerLibrary.visibility = if (songs.isEmpty()) View.GONE else View.VISIBLE
+            }
+        }
+    }
+
+    private fun playSong(song: Song) {
+        if (song.isDownloaded && song.localPath != null) {
+            val intent = Intent(requireContext(), PlayerActivity::class.java).apply {
+                putExtra(PlayerActivity.EXTRA_STREAM_URL, song.localPath)
+                putExtra(PlayerActivity.EXTRA_TITLE, song.title)
+                putExtra(PlayerActivity.EXTRA_ARTIST, song.artist)
+                putExtra(PlayerActivity.EXTRA_THUMBNAIL, song.thumbnailUrl)
+            }
+            startActivity(intent)
+        } else {
+            lifecycleScope.launch {
+                try {
+                    val streamUrl = YouTubeExtractor.getStreamUrl(song.id) ?: return@launch
+                    val intent = Intent(requireContext(), PlayerActivity::class.java).apply {
+                        putExtra(PlayerActivity.EXTRA_STREAM_URL, streamUrl)
+                        putExtra(PlayerActivity.EXTRA_TITLE, song.title)
+                        putExtra(PlayerActivity.EXTRA_ARTIST, song.artist)
+                        putExtra(PlayerActivity.EXTRA_THUMBNAIL, song.thumbnailUrl)
+                    }
+                    startActivity(intent)
+                } catch (e: Exception) { e.printStackTrace() }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : MainActivity.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/main/MainActivity.kt
+CODE       :
+package com.moonloader.music.ui.main
+
+import android.content.ComponentName
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.common.util.concurrent.ListenableFuture
+import com.moonloader.music.R
+import com.moonloader.music.databinding.ActivityMainBinding
+import com.moonloader.music.service.MusicPlaybackService
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+    private lateinit var controllerFuture: ListenableFuture<MediaController>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setupNavigation()
+        connectMediaController()
+    }
+
+    private fun setupNavigation() {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        binding.bottomNav.setupWithNavController(navController)
+    }
+
+    private fun connectMediaController() {
+        val sessionToken = SessionToken(
+            this, ComponentName(this, MusicPlaybackService::class.java)
+        )
+        controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
+    }
+
+    override fun onDestroy() {
+        MediaController.releaseFuture(controllerFuture)
+        super.onDestroy()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : PlayerActivity.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/player/PlayerActivity.kt
+CODE       :
+package com.moonloader.music.ui.player
+
+import android.content.ComponentName
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.Player
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
+import com.bumptech.glide.Glide
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.MoreExecutors
+import com.moonloader.music.databinding.ActivityPlayerBinding
+import com.moonloader.music.service.MusicPlaybackService
+
+class PlayerActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityPlayerBinding
+    private var controllerFuture: ListenableFuture<MediaController>? = null
+    private var controller: MediaController? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var seekbarTracking = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupPlayerControls()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val sessionToken = SessionToken(this, ComponentName(this, MusicPlaybackService::class.java))
+        controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
+        controllerFuture?.addListener({
+            controller = controllerFuture?.get()
+            setupController()
+        }, MoreExecutors.directExecutor())
+    }
+
+    private fun setupController() {
+        val streamUrl = intent.getStringExtra(EXTRA_STREAM_URL) ?: return
+        val title = intent.getStringExtra(EXTRA_TITLE) ?: ""
+        val artist = intent.getStringExtra(EXTRA_ARTIST) ?: ""
+        val thumbnail = intent.getStringExtra(EXTRA_THUMBNAIL) ?: ""
+
+        binding.tvTitle.text = title
+        binding.tvArtist.text = artist
+        Glide.with(this).load(thumbnail).placeholder(com.moonloader.music.R.drawable.ic_music_note)
+            .centerCrop().into(binding.imgAlbumArt)
+
+        controller?.let { ctrl ->
+            val mediaItem = MediaItem.Builder()
+                .setUri(streamUrl)
+                .setMediaMetadata(
+                    MediaMetadata.Builder()
+                        .setTitle(title)
+                        .setArtist(artist)
+                        .setArtworkUri(android.net.Uri.parse(thumbnail))
+                        .build()
+                )
+                .build()
+            ctrl.setMediaItem(mediaItem)
+            ctrl.prepare()
+            ctrl.play()
+
+            ctrl.addListener(object : Player.Listener {
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    binding.btnPlayPause.setImageResource(
+                        if (isPlaying) android.R.drawable.ic_media_pause
+                        else android.R.drawable.ic_media_play
+                    )
+                    if (isPlaying) startSeekbarUpdate() else handler.removeCallbacksAndMessages(null)
+                }
+
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if (playbackState == Player.STATE_READY) {
+                        binding.seekBar.max = (ctrl.duration / 1000).toInt()
+                    }
+                }
+            })
+        }
+    }
+
+    private fun startSeekbarUpdate() {
+        handler.post(object : Runnable {
+            override fun run() {
+                if (!seekbarTracking) {
+                    val pos = ((controller?.currentPosition ?: 0) / 1000).toInt()
+                    binding.seekBar.progress = pos
+                    binding.tvCurrentTime.text = formatTime(pos.toLong())
+                    binding.tvTotalTime.text = formatTime((controller?.duration ?: 0) / 1000)
+                }
+                handler.postDelayed(this, 500)
+            }
+        })
+    }
+
+    private fun setupPlayerControls() {
+        binding.btnPlayPause.setOnClickListener {
+            controller?.let { if (it.isPlaying) it.pause() else it.play() }
+        }
+        binding.btnNext.setOnClickListener { controller?.seekToNextMediaItem() }
+        binding.btnPrev.setOnClickListener { controller?.seekToPreviousMediaItem() }
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) binding.tvCurrentTime.text = formatTime(progress.toLong())
+            }
+            override fun onStartTrackingTouch(sb: SeekBar?) { seekbarTracking = true }
+            override fun onStopTrackingTouch(sb: SeekBar?) {
+                seekbarTracking = false
+                controller?.seekTo((sb?.progress?.toLong() ?: 0) * 1000)
+            }
+        })
+    }
+
+    private fun formatTime(seconds: Long) = "%d:%02d".format(seconds / 60, seconds % 60)
+
+    override fun onStop() {
+        super.onStop()
+        handler.removeCallbacksAndMessages(null)
+        controllerFuture?.let { MediaController.releaseFuture(it) }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
+    companion object {
+        const val EXTRA_STREAM_URL = "extra_stream_url"
+        const val EXTRA_TITLE = "extra_title"
+        const val EXTRA_ARTIST = "extra_artist"
+        const val EXTRA_THUMBNAIL = "extra_thumbnail"
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : SearchFragment.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/search/SearchFragment.kt
+CODE       :
+package com.moonloader.music.ui.search
+
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.content.Intent
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.WorkManager
+import com.moonloader.music.R
+import com.moonloader.music.data.extractor.YouTubeExtractor
+import com.moonloader.music.data.model.Song
+import com.moonloader.music.databinding.FragmentSearchBinding
+import com.moonloader.music.download.DownloadWorker
+import com.moonloader.music.ui.adapters.SongAdapter
+import com.moonloader.music.ui.player.PlayerActivity
+import kotlinx.coroutines.*
+
+class SearchFragment : Fragment() {
+
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var adapter: SongAdapter
+    private var searchJob: Job? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        setupSearchBar()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = SongAdapter(
+            onPlay = { song -> playSong(song) },
+            onDownload = { song -> downloadSong(song) }
+        )
+        binding.recyclerSearchResults.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerSearchResults.adapter = adapter
+    }
+
+    private fun setupSearchBar() {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val q = s?.toString()?.trim() ?: return
+                if (q.length >= 2) debounceSearch(q)
+            }
+        })
+        binding.etSearch.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val q = v.text?.toString()?.trim() ?: return@setOnEditorActionListener false
+                if (q.isNotEmpty()) search(q)
+                true
+            } else false
+        }
+    }
+
+    private fun debounceSearch(query: String) {
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            delay(400)
+            search(query)
+        }
+    }
+
+    private fun search(query: String) {
+        binding.progressSearch.visibility = View.VISIBLE
+        binding.tvSearchPlaceholder.visibility = View.GONE
+        binding.recyclerSearchResults.visibility = View.GONE
+        lifecycleScope.launch {
+            try {
+                val results = YouTubeExtractor.search(query)
+                binding.progressSearch.visibility = View.GONE
+                if (results.isEmpty()) {
+                    binding.tvSearchPlaceholder.text = getString(R.string.no_results)
+                    binding.tvSearchPlaceholder.visibility = View.VISIBLE
+                } else {
+                    adapter.submitList(results)
+                    binding.recyclerSearchResults.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                binding.progressSearch.visibility = View.GONE
+                binding.tvSearchPlaceholder.text = getString(R.string.error_loading)
+                binding.tvSearchPlaceholder.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun playSong(song: Song) {
+        lifecycleScope.launch {
+            try {
+                val streamUrl = YouTubeExtractor.getStreamUrl(song.id) ?: return@launch
+                val intent = Intent(requireContext(), PlayerActivity::class.java).apply {
+                    putExtra(PlayerActivity.EXTRA_STREAM_URL, streamUrl)
+                    putExtra(PlayerActivity.EXTRA_TITLE, song.title)
+                    putExtra(PlayerActivity.EXTRA_ARTIST, song.artist)
+                    putExtra(PlayerActivity.EXTRA_THUMBNAIL, song.thumbnailUrl)
+                }
+                startActivity(intent)
+            } catch (e: Exception) { e.printStackTrace() }
+        }
+    }
+
+    private fun downloadSong(song: Song) {
+        val request = DownloadWorker.buildRequest(song.videoId, song.title, song.id)
+        WorkManager.getInstance(requireContext()).enqueue(request)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : SubscriptionsFragment.kt
+FILE PATH  : app/src/main/java/com/moonloader/music/ui/subscriptions/SubscriptionsFragment.kt
+CODE       :
+package com.moonloader.music.ui.subscriptions
+
+import android.os.Bundle
+import android.view.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.moonloader.music.MoonLoaderApp
+import com.moonloader.music.data.model.Subscription
+import com.moonloader.music.databinding.FragmentSubscriptionsBinding
+import com.moonloader.music.ui.adapters.SubscriptionAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+class SubscriptionsFragment : Fragment() {
+
+    private var _binding: FragmentSubscriptionsBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var adapter: SubscriptionAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSubscriptionsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        observeSubscriptions()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = SubscriptionAdapter(
+            onOpen = { sub -> openChannel(sub) },
+            onUnsubscribe = { sub -> unsubscribe(sub.channelId) }
+        )
+        binding.recyclerSubscriptions.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerSubscriptions.adapter = adapter
+    }
+
+    private fun observeSubscriptions() {
+        lifecycleScope.launch {
+            MoonLoaderApp.instance.database.subscriptionDao().getAllSubscriptions().collectLatest { subs ->
+                adapter.submitList(subs)
+                binding.tvEmptySubscriptions.visibility = if (subs.isEmpty()) View.VISIBLE else View.GONE
+                binding.recyclerSubscriptions.visibility = if (subs.isEmpty()) View.GONE else View.VISIBLE
+            }
+        }
+    }
+
+    private fun openChannel(sub: Subscription) {
+        // Navigate to channel page — future feature
+    }
+
+    fun subscribe(id: String, name: String, url: String, avatar: String) {
+        lifecycleScope.launch {
+            MoonLoaderApp.instance.database.subscriptionDao()
+                .subscribe(Subscription(id, name, url, avatar))
+        }
+    }
+
+    fun unsubscribe(channelId: String) {
+        lifecycleScope.launch {
+            MoonLoaderApp.instance.database.subscriptionDao().getSubscription(channelId)?.let {
+                MoonLoaderApp.instance.database.subscriptionDao().unsubscribe(it)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : bottom_nav_color.xml
+FILE PATH  : app/src/main/res/color/bottom_nav_color.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:color="#6C63FF" />
+    <item android:color="#5A5A72" />
+</selector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_download.xml
+FILE PATH  : app/src/main/res/drawable/ic_download.xml
+CODE       :
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M19,9h-4V3H9v6H5l7,7 7,-7zM5,18v2h14v-2H5z"/>
+</vector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_home.xml
+FILE PATH  : app/src/main/res/drawable/ic_home.xml
+CODE       :
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M10,20v-6h4v6h5v-8h3L12,3 2,12h3v8z"/>
+</vector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher_foreground.xml
+FILE PATH  : app/src/main/res/drawable/ic_launcher_foreground.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MoonLoader Music - App Icon (AI-generated moon + music theme)
+  Design: Crescent moon with musical note, glowing purple/indigo palette
+  Background: #0A0A14 (deep space), Accent: #6C63FF (moonlight purple)
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background circle -->
+    <path
+        android:pathData="M54,54m-54,0a54,54 0,1 1,108 0a54,54 0,1 1,-108 0"
+        android:fillColor="#0A0A14" />
+
+    <!-- Stars / sparkles background -->
+    <path
+        android:pathData="M20,20 L21,20 L21,21 L20,21 Z"
+        android:fillColor="#6C63FF"
+        android:fillAlpha="0.6" />
+    <path
+        android:pathData="M85,30 L86,30 L86,31 L85,31 Z"
+        android:fillColor="#B39DDB"
+        android:fillAlpha="0.8" />
+    <path
+        android:pathData="M25,75 L26,75 L26,76 L25,76 Z"
+        android:fillColor="#6C63FF"
+        android:fillAlpha="0.5" />
+    <path
+        android:pathData="M80,80 L81,80 L81,81 L80,81 Z"
+        android:fillColor="#B39DDB"
+        android:fillAlpha="0.7" />
+    <path
+        android:pathData="M15,50 L16.5,50 L16.5,51.5 L15,51.5 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.4" />
+    <path
+        android:pathData="M90,55 L91.5,55 L91.5,56.5 L90,56.5 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.5" />
+
+    <!-- Crescent Moon -->
+    <path
+        android:pathData="M54,18 C44,18 36,26 36,36 C36,46 44,54 54,54 C48,54 42,48 42,36 C42,24 48,18 54,18 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.0" />
+
+    <!-- Main moon glow -->
+    <path
+        android:pathData="M58,22 C48.06,22 40,30.06 40,40 C40,49.94 48.06,58 58,58 C51,58 45,52 45,40 C45,28 51,22 58,22 Z"
+        android:fillColor="#E0D7FF" />
+
+    <!-- Moon highlight -->
+    <path
+        android:pathData="M55,26 C47,26 41,32 41,40 C41,48 47,54 55,54 C50,53 46.5,47.5 46.5,40 C46.5,32.5 50,27 55,26 Z"
+        android:fillColor="#F5F0FF" />
+
+    <!-- Musical note stem -->
+    <path
+        android:pathData="M67,44 L67,68"
+        android:strokeWidth="4"
+        android:strokeColor="#6C63FF"
+        android:strokeLineCap="round" />
+
+    <!-- Musical note head -->
+    <path
+        android:pathData="M67,68m-6,0a6,5 0,1 1,12 0a6,5 0,1 1,-12 0"
+        android:fillColor="#6C63FF" />
+
+    <!-- Musical note flag -->
+    <path
+        android:pathData="M67,44 C75,42 78,50 70,55"
+        android:strokeWidth="3"
+        android:strokeColor="#6C63FF"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round" />
+
+    <!-- Glow ring around note -->
+    <path
+        android:pathData="M67,68m-9,0a9,7.5 0,1 1,18 0a9,7.5 0,1 1,-18 0"
+        android:fillColor="#6C63FF"
+        android:fillAlpha="0.2" />
+
+</vector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_library.xml
+FILE PATH  : app/src/main/res/drawable/ic_library.xml
+CODE       :
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M4,6H2v14c0,1.1 0.9,2 2,2h14v-2H4V6zm16,-4H8c-1.1,0 -2,0.9 -2,2v12c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2V4c0,-1.1 -0.9,-2 -2,-2zm-1,9H9V9h10v2zm-4,4H9v-2h6v2zm4,-8H9V5h10v2z"/>
+</vector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_music_note.xml
+FILE PATH  : app/src/main/res/drawable/ic_music_note.xml
+CODE       :
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="#6C63FF"
+        android:pathData="M12,3v10.55c-0.59,-0.34 -1.27,-0.55 -2,-0.55 -2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4V7h4V3h-6z"/>
+</vector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_search.xml
+FILE PATH  : app/src/main/res/drawable/ic_search.xml
+CODE       :
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M15.5,14h-0.79l-0.28,-0.27C15.41,12.59 16,11.11 16,9.5 16,5.91 13.09,3 9.5,3S3,5.91 3,9.5 5.91,16 9.5,16c1.61,0 3.09,-0.59 4.23,-1.57l0.27,0.28v0.79l5,4.99L20.49,19l-4.99,-5zm-6,0C7.01,14 5,11.99 5,9.5S7.01,5 9.5,5 14,7.01 14,9.5 11.99,14 9.5,14z"/>
+</vector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_subscriptions.xml
+FILE PATH  : app/src/main/res/drawable/ic_subscriptions.xml
+CODE       :
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M20,8H4V6h16v2zm-2,-6H6v2h12V2zm4,10v8c0,1.1 -0.9,2 -2,2H4c-1.1,0 -2,-0.9 -2,-2v-8c0,-1.1 0.9,-2 2,-2h16c1.1,0 2,0.9 2,2zm-6,4l-6,-3.27v6.53L16,16z"/>
+</vector>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : activity_main.xml
+FILE PATH  : app/src/main/res/layout/activity_main.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A0A14">
+
+    <!-- Main content area -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!-- Mini Player (shown above bottom nav when music plays) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mini_player_container"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="56dp"
+        android:layout_marginHorizontal="8dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#1E1E30"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp">
+
+            <!-- Thumbnail -->
+            <ImageView
+                android:id="@+id/mini_player_thumbnail"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:background="#2A2A4A" />
+
+            <!-- Song info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp">
+
+                <TextView
+                    android:id="@+id/mini_player_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#EEEEF5"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:ellipsize="marquee" />
+
+                <TextView
+                    android:id="@+id/mini_player_artist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#9090A8"
+                    android:textSize="12sp"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+            </LinearLayout>
+
+            <!-- Play/Pause -->
+            <ImageButton
+                android:id="@+id/mini_player_play_pause"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_pause"
+                android:tint="#6C63FF" />
+
+            <!-- Next -->
+            <ImageButton
+                android:id="@+id/mini_player_next"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_next"
+                android:tint="#9090A8" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Bottom Navigation Bar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:background="#0E0E1E"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:labelVisibilityMode="labeled" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : activity_player.xml
+FILE PATH  : app/src/main/res/layout/activity_player.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0A14">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:titleTextColor="#EEEEF5" />
+
+    <ImageView
+        android:id="@+id/img_album_art"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_music_note"
+        android:background="#1E1E30" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="24dp"
+        android:text="Song Title"
+        android:textColor="#EEEEF5"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/tv_artist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="24dp"
+        android:text="Artist"
+        android:textColor="#9090A8"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="24dp"
+        android:progressTint="#6C63FF"
+        android:thumbTint="#6C63FF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="24dp"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tv_current_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="0:00"
+            android:textColor="#9090A8"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0:00"
+            android:textColor="#9090A8"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btn_prev"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_previous"
+            android:tint="#9090A8" />
+
+        <ImageButton
+            android:id="@+id/btn_play_pause"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_play"
+            android:tint="#6C63FF"
+            android:layout_marginHorizontal="16dp" />
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_next"
+            android:tint="#9090A8" />
+    </LinearLayout>
+
+</LinearLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : fragment_downloads.xml
+FILE PATH  : app/src/main/res/layout/fragment_downloads.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0A14">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_downloads"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_empty_downloads"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/no_downloads"
+        android:textColor="#9090A8"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:visibility="visible" />
+
+</LinearLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : fragment_home.xml
+FILE PATH  : app/src/main/res/layout/fragment_home.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A0A14">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_empty_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/explore_music"
+        android:textColor="#9090A8"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:visibility="gone" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : fragment_library.xml
+FILE PATH  : app/src/main/res/layout/fragment_library.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0A14">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_library"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_empty_library"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Your library is empty.\nPlay or save songs to see them here."
+        android:textColor="#9090A8"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:visibility="visible" />
+
+</LinearLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : fragment_search.xml
+FILE PATH  : app/src/main/res/layout/fragment_search.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0A14">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_bar"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:hint="@string/search_hint"
+        app:startIconDrawable="@drawable/ic_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_search_results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            android:visibility="gone" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_search_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/search_placeholder"
+            android:textColor="#9090A8"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+    </FrameLayout>
+
+</LinearLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : fragment_subscriptions.xml
+FILE PATH  : app/src/main/res/layout/fragment_subscriptions.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0A14">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_subscriptions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_empty_subscriptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/no_subscriptions"
+        android:textColor="#9090A8"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:visibility="visible" />
+
+</LinearLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : item_song.xml
+FILE PATH  : app/src/main/res/layout/item_song.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="16dp"
+    android:background="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/img_song_thumbnail"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="centerCrop"
+        android:background="#1E1E30" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp">
+
+        <TextView
+            android:id="@+id/tv_song_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#EEEEF5"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/tv_song_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#9090A8"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_song_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#9090A8"
+        android:textSize="12sp"
+        android:layout_marginEnd="8dp" />
+
+    <ImageButton
+        android:id="@+id/btn_song_download"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_download"
+        android:tint="#6C63FF"
+        android:layout_marginEnd="4dp" />
+
+    <ImageButton
+        android:id="@+id/btn_song_more"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_more"
+        android:tint="#9090A8" />
+</LinearLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : item_subscription.xml
+FILE PATH  : app/src/main/res/layout/item_subscription.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="16dp"
+    android:background="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/img_channel_avatar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:scaleType="centerCrop"
+        android:background="#1E1E30" />
+
+    <TextView
+        android:id="@+id/tv_channel_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingHorizontal="12dp"
+        android:textColor="#EEEEF5"
+        android:textSize="15sp"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <ImageButton
+        android:id="@+id/btn_unsubscribe"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_delete"
+        android:tint="#9090A8" />
+</LinearLayout>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : bottom_nav_menu.xml
+FILE PATH  : app/src/main/res/menu/bottom_nav_menu.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/homeFragment" android:icon="@drawable/ic_home" android:title="@string/home" />
+    <item android:id="@+id/searchFragment" android:icon="@drawable/ic_search" android:title="@string/search" />
+    <item android:id="@+id/libraryFragment" android:icon="@drawable/ic_library" android:title="@string/library" />
+    <item android:id="@+id/subscriptionsFragment" android:icon="@drawable/ic_subscriptions" android:title="@string/subscriptions" />
+    <item android:id="@+id/downloadsFragment" android:icon="@drawable/ic_download" android:title="@string/downloads" />
+</menu>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher.xml
+FILE PATH  : app/src/main/res/mipmap-hdpi/ic_launcher.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher_round.xml
+FILE PATH  : app/src/main/res/mipmap-hdpi/ic_launcher_round.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher.xml
+FILE PATH  : app/src/main/res/mipmap-mdpi/ic_launcher.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher_round.xml
+FILE PATH  : app/src/main/res/mipmap-mdpi/ic_launcher_round.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher.xml
+FILE PATH  : app/src/main/res/mipmap-xhdpi/ic_launcher.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher_round.xml
+FILE PATH  : app/src/main/res/mipmap-xhdpi/ic_launcher_round.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher.xml
+FILE PATH  : app/src/main/res/mipmap-xxhdpi/ic_launcher.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher_round.xml
+FILE PATH  : app/src/main/res/mipmap-xxhdpi/ic_launcher_round.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher.xml
+FILE PATH  : app/src/main/res/mipmap-xxxhdpi/ic_launcher.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : ic_launcher_round.xml
+FILE PATH  : app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : nav_graph.xml
+FILE PATH  : app/src/main/res/navigation/nav_graph.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment android:id="@+id/homeFragment"
+        android:name="com.moonloader.music.ui.home.HomeFragment"
+        android:label="Home" />
+    <fragment android:id="@+id/searchFragment"
+        android:name="com.moonloader.music.ui.search.SearchFragment"
+        android:label="Search" />
+    <fragment android:id="@+id/libraryFragment"
+        android:name="com.moonloader.music.ui.library.LibraryFragment"
+        android:label="Library" />
+    <fragment android:id="@+id/subscriptionsFragment"
+        android:name="com.moonloader.music.ui.subscriptions.SubscriptionsFragment"
+        android:label="Subscriptions" />
+    <fragment android:id="@+id/downloadsFragment"
+        android:name="com.moonloader.music.ui.downloads.DownloadsFragment"
+        android:label="Downloads" />
+</navigation>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : colors.xml
+FILE PATH  : app/src/main/res/values/colors.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#0A0A14</color>
+    <color name="colorPrimary">#6C63FF</color>
+    <color name="colorPrimaryVariant">#3700B3</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#B39DDB</color>
+    <color name="colorBackground">#0A0A14</color>
+    <color name="colorSurface">#12121F</color>
+    <color name="colorSurfaceVariant">#1E1E30</color>
+    <color name="colorOnSurface">#E8E8F0</color>
+    <color name="colorTextSecondary">#9090A8</color>
+    <color name="colorAccent">#6C63FF</color>
+</resources>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : strings.xml
+FILE PATH  : app/src/main/res/values/strings.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoonLoader Music</string>
+    <string name="search_hint">Search songs, artists…</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="library">Library</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="downloads">Downloads</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="download">Download</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="add_to_playlist">Add to Playlist</string>
+    <string name="create_playlist">Create Playlist</string>
+    <string name="share">Share</string>
+    <string name="settings">Settings</string>
+    <string name="trending">Trending</string>
+    <string name="recommended">Recommended</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="no_results">No results found</string>
+    <string name="loading">Loading…</string>
+    <string name="error_loading">Failed to load. Tap to retry.</string>
+    <string name="download_complete">Download complete</string>
+    <string name="download_failed">Download failed</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="queue">Queue</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="repeat">Repeat</string>
+    <string name="eq">Equalizer</string>
+    <string name="sleep_timer">Sleep Timer</string>
+    <string name="audio_quality">Audio Quality</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="open_source">Open Source</string>
+    <string name="license">License GPL-3.0</string>
+    <string name="no_downloads">No downloads yet.\nDownload songs to listen offline.</string>
+    <string name="no_subscriptions">No subscriptions yet.\nSubscribe to artists to follow them.</string>
+    <string name="explore_music">Trending music will appear here.</string>
+    <string name="search_placeholder">Search YouTube Music…</string>
+</resources>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : themes.xml
+FILE PATH  : app/src/main/res/values/themes.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MoonLoaderMusic" parent="Theme.Material3.Dark">
+        <item name="colorPrimary">#6C63FF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#B39DDB</item>
+        <item name="colorOnSecondary">#000000</item>
+        <item name="android:colorBackground">#0A0A14</item>
+        <item name="colorSurface">#12121F</item>
+        <item name="colorOnSurface">#E8E8F0</item>
+        <item name="colorSurfaceVariant">#1E1E30</item>
+        <item name="android:statusBarColor">#0A0A14</item>
+        <item name="android:navigationBarColor">#0A0A14</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorAccent">#6C63FF</item>
+        <item name="android:textColorPrimary">#EEEEF5</item>
+        <item name="android:textColorSecondary">#9090A8</item>
+    </style>
+</resources>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : file_paths.xml
+FILE PATH  : app/src/main/res/xml/file_paths.xml
+CODE       :
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-files-path name="moonloader_downloads" path="MoonLoader/" />
+    <external-path name="external_downloads" path="." />
+    <files-path name="internal_files" path="." />
+    <cache-path name="cache" path="." />
+</paths>
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : build.gradle
+FILE PATH  : build.gradle
+CODE       :
+// Top-level build file for MoonLoader Music
+buildscript {
+    ext {
+        kotlin_version = '1.9.22'
+        compose_version = '1.5.4'
+    }
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : gradle-wrapper.properties
+FILE PATH  : gradle/wrapper/gradle-wrapper.properties
+CODE       :
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : gradlew
+FILE PATH  : gradlew
+CODE       :
+#!/bin/sh
+#
+# Gradle startup script for UN*X
+#
+APP_NAME="Gradle"
+APP_BASE_NAME=`basename "$0"`
+
+DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
+
+MAX_FD="maximum"
+
+GRADLE_OPTS="${GRADLE_OPTS:-""}"
+
+warn () {
+    echo "$*"
+}
+
+die () {
+    echo
+    echo "$*"
+    echo
+    exit 1
+}
+
+OS="`uname`"
+case $OS in
+  Darwin* )
+    darwin=true
+    ;;
+  MINGW* )
+    msys=true
+    ;;
+  CYGWIN* )
+    cygwin=true
+    ;;
+  *MSYS* )
+    msys=true
+    ;;
+esac
+
+if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
+    APP_HOME=`cygpath --path --mixed "$APP_HOME"`
+    CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
+    JAVACMD=`cygpath --unix "$JAVACMD"`
+fi
+
+JAVA_HOME_CMD="$JAVA_HOME/bin/java"
+if [ -n "$JAVA_HOME" ] ; then
+    if [ -x "$JAVA_HOME_CMD" ] ; then
+        JAVACMD="$JAVA_HOME_CMD"
+    elif [ -x "${JAVA_HOME_CMD}.exe" ] ; then
+        JAVACMD="${JAVA_HOME_CMD}.exe"
+    fi
+fi
+if [ -z "$JAVACMD" ] ; then
+    JAVACMD=java
+fi
+
+APP_HOME="`pwd -P`"
+CLASSPATH="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
+
+exec "$JAVACMD" $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS \
+  "-Dorg.gradle.appname=$APP_BASE_NAME" \
+  -classpath "$CLASSPATH" \
+  org.gradle.wrapper.GradleWrapperMain \
+  "$@"
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : gradlew.bat
+FILE PATH  : gradlew.bat
+CODE       :
+@rem Gradle startup script for Windows
+@if "%DEBUG%"=="" @echo off
+@rem Set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" setlocal
+
+set APP_HOME=%~dp0
+set APP_NAME=Gradle
+set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
+
+set JAVACMD=java
+if not "%JAVA_HOME%"=="" if exist "%JAVA_HOME%\bin\java.exe" set JAVACMD=%JAVA_HOME%\bin\java.exe
+
+%JAVACMD% -classpath %CLASSPATH% org.gradle.wrapper.GradleWrapperMain %*
+
+:end
+@rem End local scope for the variables with windows NT shell
+if "%ERRORLEVEL%"=="0" goto mainEnd
+:fail
+exit /b 1
+:mainEnd
+if "%OS%"=="Windows_NT" endlocal
+:omega
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : proguard-rules.pro
+FILE PATH  : proguard-rules.pro
+CODE       :
+# MoonLoader Music ProGuard rules
+
+# Keep NewPipe Extractor
+-keep class org.schabi.newpipe.extractor.** { *; }
+-dontwarn org.schabi.newpipe.extractor.**
+
+# Keep Room entities
+-keep class com.moonloader.music.data.model.** { *; }
+
+# Keep data models
+-keepclassmembers class * {
+    @androidx.room.* *;
+}
+
+# OkHttp
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-keep class okhttp3.** { *; }
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
+
+# Gson
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn sun.misc.**
+-keep class com.google.gson.** { *; }
+
+# Retrofit
+-keep class retrofit2.** { *; }
+-dontwarn retrofit2.**
+
+# Coroutines
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+
+# ExoPlayer/Media3
+-keep class androidx.media3.** { *; }
+-dontwarn androidx.media3.**
+
+--------------------------------------------------------------------------------
+
+FILE NAME  : settings.gradle
+FILE PATH  : settings.gradle
+CODE       :
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    }
+}
+
+rootProject.name = "MoonLoaderMusic"
+include ':app'
+
+--------------------------------------------------------------------------------
+

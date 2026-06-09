@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MoonLoaderMusic" parent="Theme.Material3.Dark">
+        <item name="colorPrimary">#6C63FF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#B39DDB</item>
+        <item name="colorOnSecondary">#000000</item>
+        <item name="android:colorBackground">#0A0A14</item>
+        <item name="colorSurface">#12121F</item>
+        <item name="colorOnSurface">#E8E8F0</item>
+        <item name="colorSurfaceVariant">#1E1E30</item>
+        <item name="android:statusBarColor">#0A0A14</item>
+        <item name="android:navigationBarColor">#0A0A14</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorAccent">#6C63FF</item>
+        <item name="android:textColorPrimary">#EEEEF5</item>
+        <item name="android:textColorSecondary">#9090A8</item>
+    </style>
+</resources>
